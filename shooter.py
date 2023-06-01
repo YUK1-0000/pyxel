@@ -97,7 +97,7 @@ class Player:
         self.y = max(self.y, 0)
         self.y = min(self.y, pyxel.height - self.h)
 
-        if pyxel.btn(pyxel.KEY_SPACE) or pyxel.btnp(pyxel.GAMEPAD1_BUTTON_A):
+        if pyxel.btnp(pyxel.KEY_SPACE) or pyxel.btnp(pyxel.GAMEPAD1_BUTTON_A):
             Bullet(
                 self.x + (PLAYER_WIDTH - BULLET_WIDTH) / 2, self.y - BULLET_HEIGHT / 2
             )
@@ -174,14 +174,14 @@ class App:
         pyxel.init(120, 160, title="Pyxel Shooter")
         pyxel.image(0).set(0, 0,
             [
-                "00c00c00",
-                "0c7007c0",
-                "0c7007c0",
-                "c703b07c",
-                "77033077",
-                "785cc587",
-                "85c77c58",
-                "0c0880c0",
+                "0f00000f",
+                "fff99fff",
+                "9ffffff9",
+                "ff0ff0ff",
+                "9f0ff0f9",
+                "ffffffff",
+                "00000000",
+                "00000000",
             ])
         pyxel.image(0).set(8, 0,
             [
