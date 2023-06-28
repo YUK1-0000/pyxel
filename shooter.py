@@ -13,7 +13,7 @@ PLAYER_HEIGHT = 8
 PLAYER_SPEED = 2
 
 BULLET_WIDTH = 2
-BULLET_HEIGHT = 8
+BULLET_HEIGHT = 2
 BULLET_COLOR = 11
 BULLET_SPEED = 4
 
@@ -97,11 +97,14 @@ class Player:
         self.y = max(self.y, 0)
         self.y = min(self.y, pyxel.height - self.h)
 
-        if pyxel.btnp(pyxel.KEY_SPACE) or pyxel.btnp(pyxel.GAMEPAD1_BUTTON_A):
-            Bullet(
-                self.x + (PLAYER_WIDTH - BULLET_WIDTH) / 2, self.y - BULLET_HEIGHT / 2
-            )
+        if pyxel.btn(pyxel.KEY_1):
+            Bullet(self.x + (PLAYER_WIDTH - BULLET_WIDTH) / 2, self.y - BULLET_HEIGHT / 2)
             pyxel.play(0, 0)
+        if pyxel.btn(pyxel.KEY_2):
+            SprayBullet(self.x + (PLAYER_WIDTH - BULLET_WIDTH) / 2, self.y - BULLET_HEIGHT / 2)
+            pyxel.play(0, 0)
+        if pyxel.btn(pyxel.KEY_3):
+            ...
 
     def draw(self):
         pyxel.blt(self.x, self.y, 0, 0, 0, self.w, self.h, 0)
@@ -124,6 +127,45 @@ class Bullet:
     def draw(self):
         pyxel.rect(self.x, self.y, self.w, self.h, BULLET_COLOR)
 
+
+class SprayBullet:
+    def __init__(self, x, y):
+        self.x = x
+        self.y, self.init_y = y, y
+        self.w = 1
+        self.h = 1
+        self.is_alive = True
+        bullets.append(self)
+
+    def update(self):
+        self.x += pyxel.rndi(-5, 5)
+        self.y -= 3
+        if self.y + self.h - 1 < 0 or self.y + 50 < self.init_y:
+            self.is_alive = False
+
+    def draw(self):
+        pyxel.rect(self.x, self.y, self.w, self.h, BULLET_COLOR)
+
+
+class SpreadBullet:
+    def __init__(self, x, y, number, spread_width):
+        self.x = x
+        self.y = y
+        self.number = number
+        self.spread_width = spread_width
+        self.w = BULLET_WIDTH
+        self.h = BULLET_HEIGHT
+        self.is_alive = True
+        bullets.append(self)
+
+    def update(self):
+        self.x += self.spread_width
+        self.y -= BULLET_SPEED
+        if self.y + self.h - 1 < 0:
+            self.is_alive = False
+
+    def draw(self):
+        pyxel.rect(self.x, self.y, self.w, self.h, BULLET_COLOR)
 
 class Enemy:
     def __init__(self, x, y):
@@ -174,14 +216,14 @@ class App:
         pyxel.init(120, 160, title="Pyxel Shooter")
         pyxel.image(0).set(0, 0,
             [
-                "0f00000f",
-                "fff99fff",
-                "9ffffff9",
-                "ff0ff0ff",
-                "9f0ff0f9",
-                "ffffffff",
-                "00000000",
-                "00000000",
+                "00c00c00",
+                "0c7007c0",
+                "0c7007c0",
+                "c703b07c",
+                "77033077",
+                "785cc587",
+                "85c77c58",
+                "0c0880c0",
             ])
         pyxel.image(0).set(8, 0,
             [
